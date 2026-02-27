@@ -57,21 +57,21 @@ insert into "user" values (4,'abba','petrova','1990-10-02');
 -- Вывести их имена в формате
 -- id пользователя | имя | фамилия | сумма покупок
 
-select u.id, u.firstname, p.sku
-from "user" u
-         inner join purchase p on u.id = p.user_id
-where u.id not in (
-    select bl.user_id from ban_list bl
-                               inner join purchase p on p.user_id = bl.user_id
-    where p.date < bl.date_from)
-order by u.firstname asc,
-         p.sku asc;
+SELECT u.id, u.firstname, p.sku
+FROM "user" u
+INNER JOIN purchase p ON u.id = p.user_id
+WHERE u.id NOT IN (SELECT bl.user_id
+                   FROM ban_list bl
+                   INNER JOIN purchase p ON p.user_id = bl.user_id
+                   WHERE p.date < bl.date_from)
+ORDER BY u.firstname ASC, p.sku ASC;
 
 
-select u.id as id, u.firstname as name, u.lastname as lastname, sum(p.price) as sum_price
-from "user" u
-         inner join purchase p on u.id = p.user_id
-GROUP BY
-    u.id, u.firstname, u.lastname
-HAVING
-    SUM(p.price) > 5000;
+SELECT u.id AS id,
+       u.firstname AS name,
+       u.lastname AS lastname,
+       sum(p.price) AS sum_price
+FROM "user" u
+INNER JOIN purchase p ON u.id = p.user_id
+GROUP BY u.id, u.firstname, u.lastname
+HAVING SUM(p.price) > 5000;
