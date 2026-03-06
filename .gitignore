@@ -1,3 +1,4 @@
 .idea/
 .vscode/
+.DS_Store
 Concurrency_patterns/test.go
