@@ -171,6 +171,16 @@ GET POST PUT PATCH DELETE HEAD OPTIONS CONNECT TRACE
 
 ---
 
+### HTTP vs HTTPS
+
+- **HTTP** — передача данных в открытом виде (текст)
+- **HTTPS** — HTTP поверх **SSL/TLS** (шифрование)
+    - S = Secure
+    - Данные шифруются, нельзя перехватить
+    - Используются сертификаты для подтверждения подлинности сайта
+
+---
+
 ## CORS (Cross-Origin Resource Sharing)
 
 Браузер запрещает JavaScript с сайта A обращаться к сайту B (Same-Origin Policy). CORS — механизм, позволяющий сайтам разрешать такие запросы.
