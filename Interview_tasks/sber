@@ -1,0 +1,129 @@
+Семафор:
+
+package main
+
+import (
+    "fmt"
+    "net/http"
+    "sync"
+)
+
+func callRequestsForURLs(urls []string, k int) []*http.Response {
+    if k <= 0 {
+        return nil
+    }
+    
+    var wg sync.WaitGroup
+    // Канал-семафор: буфер размером k
+    // Вмещает не больше k "занятых слотов"
+    sem := make(chan struct{}, k)
+    
+    // Канал для сбора результатов (буфер = количество URL-ов)
+    results := make(chan *http.Response, len(urls))
+    
+    // Запускаем горутину для каждого URL
+    for _, url := range urls {
+        wg.Add(1)
+        go func(url string) {
+            defer wg.Done()
+            
+            // Захватываем слот в семафоре (блокируется, если уже k активных)
+            sem <- struct{}{}
+            defer func() { <-sem }() // Освобождаем слот
+            
+            // Делаем запрос
+            resp, err := http.Get(url)
+            if err != nil {
+                // В реальном коде логируем ошибку
+                fmt.Printf("Error fetching %s: %v\n", url, err)
+                results <- nil
+                return
+            }
+            results <- resp
+        }(url) // Важно! Передаем url, чтобы избежать замыкания
+    }
+    
+    // Ждем завершения всех горутин
+    go func() {
+        wg.Wait()
+        close(results) // Закрываем канал результатов
+    }()
+    
+    // Собираем все ответы в слайс
+    var responses []*http.Response
+    for resp := range results {
+        responses = append(responses, resp)
+    }
+    
+    return responses
+}
+
+
+
+
+
+
+Один проход
+
+func ItemFromEnd(k int, head *Item) interface{} {
+    if head == nil {
+        return nil
+    }
+    
+    // Два указателя
+    fast := head
+    slow := head
+    
+    // Двигаем fast на k шагов вперед
+    for i := 0; i < k; i++ {
+        if fast == nil {
+            return nil // список короче k
+        }
+        fast = fast.next
+    }
+    
+    // Если fast уже nil, значит k == длине списка -> нужно вернуть голову
+    if fast == nil {
+        return slow.value
+    }
+    
+    // Двигаем оба указателя, пока fast не дойдет до конца
+    for fast.next != nil {
+        fast = fast.next
+        slow = slow.next
+    }
+    
+    // Теперь slow указывает на элемент за k шагов от конца
+    return slow.value
+}
+
+
+
+
+func ItemFromEnd(k int, head *Item) interface{} {
+    if head == nil {
+        return nil
+    }
+
+    // 1. Считаем длину списка
+    length := 0
+    current := head
+    for current != nil {
+        length++
+        current = current.next
+    }
+
+    // 2. Проверяем, что k не выходит за границы
+    if k >= length {
+        return nil
+    }
+
+    // 3. Находим индекс элемента с начала
+    indexFromStart := length - k - 1
+    current = head
+    for i := 0; i < indexFromStart; i++ {
+        current = current.next
+    }
+
+    return current.value
+}

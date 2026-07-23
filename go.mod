@@ -6,6 +6,7 @@ toolchain go1.24.11
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/go-chi/chi/v5 v5.3.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/testify v1.11.1 // indirect
 	golang.org/x/exp v0.0.0-20251125195548-87e1e737ad39 // indirect

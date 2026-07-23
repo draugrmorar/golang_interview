@@ -77,3 +77,54 @@ Concurrency:
     https://habr.com/ru/companies/oleg-bunin/articles/521582/
     https://youtu.be/hJ3Y_8Zhju8?si=0fT_6AIRkHwEePIQ
     https://github.com/goavengers/go-interview
+
+квадратичное пробирование
+
+// Type Definition: создание совершенно нового типа NewInt
+type NewInt int
+// Type Alias: создание псевдонима AliasInt для типа int
+type AliasInt = int
+func main() {
+    var regularInt int = 10
+    var n NewInt = 20
+    var a AliasInt = 30
+
+    // ОШИБКА: cannot use n (variable of type NewInt) as type int
+    // regularInt = n
+
+    // УСПЕШНО: AliasInt - это точный синоним int, типы взаимозаменяемы
+    regularInt = a
+
+    fmt.Printf("Тип regularInt: %T\n", regularInt)
+    fmt.Printf("Тип n: %T\n", n)
+    fmt.Printf("Тип a: %T\n", a)
+}
+
+
+
+
+удаление из новой мапы
+том стоун в мапе
+!! синк пул
+
+!! как работает мьютекс/рв мьютекс
+!! синк конд
+!! каналы
+
+!! дженерики
+!! контекст
+!! вейт группа
+
+!! замыкание
+!! AI агенты
+!! директивы компилятора
+
+
+в понедельник в 14.00
+
+сегодня:
+- сгенерировать ч/з джеминай простой сервер
+- сгенерировать тесты для этого сервера
+- разобрать работу мьютекса и рв мьютекса
+
+
